@@ -73,7 +73,7 @@ class _EmailScreenState extends State<EmailScreen> {
               ),
               cursorColor: Theme.of(context).primaryColor,
             ),
-            Gaps.v16,
+            Gaps.v28,
             FormButton(
               disabled: _username.isEmpty,
             ),
