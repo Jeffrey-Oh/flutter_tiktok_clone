@@ -40,14 +40,14 @@ class _PasswordScreenState extends State<PasswordScreen> {
     super.dispose();
   }
 
-  bool _isPasswordValidWithLength() {
+  bool isPasswordValidWithLength() {
     if (_password.isEmpty) return false;
     if (_password.length < 8 || _password.length > 20) return false;
 
     return true;
   }
 
-  bool _isPasswordValidWithCombination() {
+  bool isPasswordValidWithCombination() {
     if (_password.isEmpty) return false;
 
     final regExp = RegExp(
@@ -65,7 +65,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
   }
 
   void _onSubmit() {
-    if (!_isPasswordValidWithLength() || !_isPasswordValidWithCombination()) {
+    if (!isPasswordValidWithLength() || !isPasswordValidWithCombination()) {
       return;
     }
 
@@ -168,7 +168,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
                   FaIcon(
                     FontAwesomeIcons.circleCheck,
                     size: Sizes.size20,
-                    color: _isPasswordValidWithLength()
+                    color: isPasswordValidWithLength()
                         ? Colors.green
                         : Colors.grey.shade400,
                   ),
@@ -182,7 +182,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
                   FaIcon(
                     FontAwesomeIcons.circleCheck,
                     size: Sizes.size20,
-                    color: _isPasswordValidWithCombination()
+                    color: isPasswordValidWithCombination()
                         ? Colors.green
                         : Colors.grey.shade400,
                   ),
@@ -194,8 +194,8 @@ class _PasswordScreenState extends State<PasswordScreen> {
               GestureDetector(
                 onTap: _onSubmit,
                 child: FormButton(
-                  disabled: !_isPasswordValidWithLength() ||
-                      !_isPasswordValidWithCombination(),
+                  disabled: !isPasswordValidWithLength() ||
+                      !isPasswordValidWithCombination(),
                   text: "Next",
                 ),
               ),
