@@ -14,7 +14,7 @@ class AuthButton extends StatelessWidget {
     required this.screen,
   });
 
-  void _onTabScreen(BuildContext context) {
+  void _onTapScreen(BuildContext context) {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => screen,
@@ -25,7 +25,7 @@ class AuthButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => _onTabScreen(context),
+      onTap: () => _onTapScreen(context),
       child: FractionallySizedBox(
         // FractionallySizedBox - 부모의 영역에 맞추는 위젯
         widthFactor: 1, // 비율
