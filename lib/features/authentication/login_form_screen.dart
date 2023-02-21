@@ -21,10 +21,14 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
       if (_formKey.currentState!.validate()) {
         _formKey.currentState!.save();
 
-        Navigator.of(context).push(
+        Navigator.of(context).pushAndRemoveUntil(
+          // pushAndRemoveUntil - 지금까지 쌓아둔 레이어 화면을 전부 삭제 할 것인지 정하는 위젯
           MaterialPageRoute(
             builder: (context) => const InterestsScreen(),
           ),
+          // true - 전부 살림
+          // false - 전부 삭제
+          (route) => false,
         );
       }
     }
