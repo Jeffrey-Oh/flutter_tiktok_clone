@@ -20,6 +20,23 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     ),
   ];
 
+  final destinations = [
+    const NavigationDestination(
+      icon: FaIcon(
+        FontAwesomeIcons.house,
+        color: Colors.teal,
+      ),
+      label: 'Home',
+    ),
+    const NavigationDestination(
+      icon: FaIcon(
+        FontAwesomeIcons.magnifyingGlass,
+        color: Colors.amber,
+      ),
+      label: 'Search',
+    ),
+  ];
+
   void _onTap(int index) {
     setState(() {
       _selectedIndex = index;
@@ -30,29 +47,11 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: screens[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.shifting,
-        onTap: _onTap,
-        currentIndex: _selectedIndex,
-        // selectedItemColor: Theme.of(context).primaryColor,
-        items: const [
-          BottomNavigationBarItem(
-            icon: FaIcon(
-              FontAwesomeIcons.house,
-            ),
-            label: "house",
-            tooltip: "hello",
-            backgroundColor: Colors.amber,
-          ),
-          BottomNavigationBarItem(
-            icon: FaIcon(
-              FontAwesomeIcons.magnifyingGlass,
-            ),
-            label: "house",
-            tooltip: "hi",
-            backgroundColor: Colors.blue,
-          ),
-        ],
+      bottomNavigationBar: NavigationBar(
+        labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
+        selectedIndex: _selectedIndex,
+        onDestinationSelected: _onTap,
+        destinations: destinations,
       ),
     );
   }
