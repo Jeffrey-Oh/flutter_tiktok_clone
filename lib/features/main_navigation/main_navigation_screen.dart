@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:tiktok_clone/constants/sizes.dart';
 
 class MainNavigationScreen extends StatefulWidget {
   const MainNavigationScreen({super.key});
@@ -13,27 +13,20 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
 
   final screens = [
     const Center(
-      child: Text('Home'),
+      child: Text(
+        'Home',
+        style: TextStyle(
+          fontSize: Sizes.size36,
+        ),
+      ),
     ),
     const Center(
-      child: Text('Search'),
-    ),
-  ];
-
-  final destinations = [
-    const NavigationDestination(
-      icon: FaIcon(
-        FontAwesomeIcons.house,
-        color: Colors.teal,
+      child: Text(
+        'Search',
+        style: TextStyle(
+          fontSize: Sizes.size36,
+        ),
       ),
-      label: 'Home',
-    ),
-    const NavigationDestination(
-      icon: FaIcon(
-        FontAwesomeIcons.magnifyingGlass,
-        color: Colors.amber,
-      ),
-      label: 'Search',
     ),
   ];
 
@@ -45,14 +38,24 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: screens[_selectedIndex],
-      bottomNavigationBar: NavigationBar(
-        labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
-        selectedIndex: _selectedIndex,
-        onDestinationSelected: _onTap,
-        destinations: destinations,
+    return CupertinoTabScaffold(
+      tabBar: CupertinoTabBar(
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(
+              CupertinoIcons.house,
+            ),
+            label: "Home",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              CupertinoIcons.search,
+            ),
+            label: "Search",
+          ),
+        ],
       ),
+      tabBuilder: (context, index) => screens[index],
     );
   }
 }
