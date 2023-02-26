@@ -9,11 +9,13 @@ class NavTab extends StatelessWidget {
     required this.isSelected,
     required this.icon,
     required this.onTap,
+    required this.selectedIcon,
   });
 
   final String text;
   final bool isSelected;
   final IconData icon;
+  final IconData selectedIcon;
   final Function onTap;
 
   @override
@@ -27,10 +29,11 @@ class NavTab extends StatelessWidget {
             duration: const Duration(milliseconds: 300),
             opacity: isSelected ? 1 : 0.6,
             child: Column(
-              mainAxisSize: MainAxisSize.min,
+              mainAxisSize:
+                  MainAxisSize.min, // 최소 잡는 이유는 화면 하나에서 Column 은 최대로 잡으려고 하기 때문
               children: [
                 FaIcon(
-                  icon,
+                  isSelected ? selectedIcon : icon,
                   color: Colors.white,
                 ),
                 Gaps.v5,
