@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:marquee/marquee.dart';
+import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/videos/widgets/video_aside_button.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -20,14 +23,26 @@ class VideoPost extends StatefulWidget {
 
 class _VideoPostState extends State<VideoPost>
     with SingleTickerProviderStateMixin {
-  final VideoPlayerController _videoPlayerController =
-      VideoPlayerController.asset("assets/videos/video.mp4");
+  late final VideoPlayerController _videoPlayerController;
 
   late final AnimationController _animationController;
 
   bool _isPaused = false;
 
   final Duration _animationDuration = const Duration(milliseconds: 200);
+
+  bool _isSeeMore = true;
+
+  final List<String> _hashTag = [
+    "tiktok",
+    "clone",
+    "Hello",
+    "flutter",
+    "tiktok",
+    "clone",
+    "Hello",
+    "flutter",
+  ];
 
   void _onVideoChange() {
     if (_videoPlayerController.value.isInitialized) {
@@ -39,9 +54,12 @@ class _VideoPostState extends State<VideoPost>
   }
 
   void _initVideoPlayer() async {
+    _videoPlayerController =
+        VideoPlayerController.asset("assets/videos/video.mp4");
     await _videoPlayerController.initialize();
-    setState(() {});
+    await _videoPlayerController.setLooping(true);
     _videoPlayerController.addListener(_onVideoChange);
+    setState(() {});
   }
 
   @override
@@ -81,6 +99,12 @@ class _VideoPostState extends State<VideoPost>
     }
     setState(() {
       _isPaused = !_isPaused;
+    });
+  }
+
+  void _onSeeMore() {
+    setState(() {
+      _isSeeMore = !_isSeeMore;
     });
   }
 
@@ -125,6 +149,120 @@ class _VideoPostState extends State<VideoPost>
                   ),
                 ),
               ),
+            ),
+          ),
+          Positioned(
+            bottom: 20,
+            left: 10,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "@jeffrey",
+                  style: TextStyle(
+                    fontSize: Sizes.size20,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Gaps.v10,
+                Text(
+                  "Let's go ocean world",
+                  style: TextStyle(
+                    fontSize: Sizes.size16,
+                    color: Colors.grey.shade200,
+                  ),
+                ),
+                Gaps.v5,
+                SizedBox(
+                  width: 350,
+                  child: Wrap(
+                    direction: Axis.horizontal,
+                    alignment: WrapAlignment.start,
+                    spacing: Sizes.size5,
+                    children: [
+                      for (var item in _isSeeMore
+                          ? _hashTag.sublist(
+                              0, (_hashTag.length > 4 ? 4 : _hashTag.length))
+                          : _hashTag)
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            right: Sizes.size2,
+                          ),
+                          child: Text(
+                            "#$item",
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      Opacity(
+                        opacity: _isSeeMore ? 1 : 0,
+                        child: GestureDetector(
+                          onTap: _onSeeMore,
+                          child: const Text(
+                            " ... See more",
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Gaps.v10,
+                Row(
+                  children: [
+                    const FaIcon(
+                      FontAwesomeIcons.music,
+                      size: Sizes.size14,
+                      color: Colors.white,
+                    ),
+                    Gaps.h5,
+                    SizedBox(
+                      width: 200,
+                      height: 15,
+                      child: Marquee(
+                        text: " Red bone - Come and Get Your Love ",
+                        style: TextStyle(
+                          color: Colors.grey.shade200,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+            bottom: 20,
+            right: 10,
+            child: Column(
+              children: const [
+                CircleAvatar(
+                  radius: 25,
+                  backgroundColor: Colors.black,
+                  foregroundColor: Colors.white,
+                  child: Text("제프리"),
+                ),
+                Gaps.v24,
+                VideoAsideButton(
+                  icon: FontAwesomeIcons.solidHeart,
+                  text: "2.9M",
+                ),
+                Gaps.v24,
+                VideoAsideButton(
+                  icon: FontAwesomeIcons.solidComment,
+                  text: "33K",
+                ),
+                Gaps.v24,
+                VideoAsideButton(
+                  icon: FontAwesomeIcons.share,
+                  text: "Share",
+                ),
+              ],
             ),
           ),
         ],
