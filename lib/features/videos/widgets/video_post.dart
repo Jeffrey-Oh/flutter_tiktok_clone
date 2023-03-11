@@ -119,6 +119,8 @@ class _VideoPostState extends State<VideoPost>
     await showModalBottomSheet(
       context: context,
       builder: (context) => const VideoComments(),
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true, // ListView 안에서는 true 로 해줘야함
     );
 
     _onTogglePause();
@@ -191,7 +193,7 @@ class _VideoPostState extends State<VideoPost>
                 ),
                 Gaps.v5,
                 SizedBox(
-                  width: 350,
+                  width: MediaQuery.of(context).size.width / 1.2,
                   child: Wrap(
                     direction: Axis.horizontal,
                     alignment: WrapAlignment.start,

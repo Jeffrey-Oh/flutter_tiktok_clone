@@ -43,10 +43,12 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // bottom bar 로 인해 사이즈가 자동 조정되는 것을 막음 (키보드가 나올 때 resize 되면서 화면이 작아짐을 방지)
+      resizeToAvoidBottomInset: false,
+      backgroundColor: _selectedIndex == 0 ? Colors.black : Colors.white,
       // Stack + Offstage - 2개의 조합은 네이게이션에 따라 화면을 숨기고 보여주고
       // 할 수 있어서 렌더링이 매번 필요하지 않고 사용자의 마지막 행동을 그대로 냅둘 수 있다
       // 단점은 네비게이션의 개수만큼 많은 리소스를 사용해야함
-      backgroundColor: _selectedIndex == 0 ? Colors.black : Colors.white,
       body: Stack(
         children: [
           Offstage(
