@@ -193,7 +193,7 @@ class _VideoPostState extends State<VideoPost>
                 ),
                 Gaps.v5,
                 SizedBox(
-                  width: MediaQuery.of(context).size.width / 1.2,
+                  width: MediaQuery.of(context).size.width * 0.8,
                   child: Wrap(
                     direction: Axis.horizontal,
                     alignment: WrapAlignment.start,
