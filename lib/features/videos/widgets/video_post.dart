@@ -80,6 +80,7 @@ class _VideoPostState extends State<VideoPost>
   @override
   void dispose() {
     _videoPlayerController.dispose();
+    _animationController.dispose();
     super.dispose();
   }
 
@@ -92,8 +93,6 @@ class _VideoPostState extends State<VideoPost>
     }
 
     if (_videoPlayerController.value.isPlaying && info.visibleFraction == 0) {
-      _onTogglePause();
-    } else {
       _onTogglePause();
     }
   }
