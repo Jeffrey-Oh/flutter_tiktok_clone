@@ -15,7 +15,7 @@ class MainNavigationScreen extends StatefulWidget {
 }
 
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
 
   // key - GlobalKey 는 서로 다른 것이라고 알려주기 위한 값
 
