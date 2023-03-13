@@ -208,16 +208,11 @@ class _VideoPostState extends State<VideoPost>
                           ? _hashTag.sublist(
                               0, (_hashTag.length > 4 ? 4 : _hashTag.length))
                           : _hashTag)
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            right: Sizes.size2,
-                          ),
-                          child: Text(
-                            "#$item",
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
+                        Text(
+                          "#$item",
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       Opacity(
@@ -225,7 +220,7 @@ class _VideoPostState extends State<VideoPost>
                         child: GestureDetector(
                           onTap: _onSeeMore,
                           child: const Text(
-                            " ... See more",
+                            "... See more",
                             style: TextStyle(
                               color: Colors.white,
                             ),
