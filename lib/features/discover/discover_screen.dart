@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
@@ -22,15 +21,30 @@ class DiscoverScreen extends StatefulWidget {
 }
 
 class _DiscoverScreenState extends State<DiscoverScreen> {
-  final TextEditingController _textEditingController =
-      TextEditingController(text: "Initial Text");
+  final TextEditingController _textEditingController = TextEditingController();
 
-  void _onSearchChanged(String value) {
-    print("Changed : $value");
+  String searchText = "";
+
+  bool _isWriting = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _textEditingController.addListener(() {
+      setState(() {
+        searchText = _textEditingController.text;
+        if (searchText.isNotEmpty) {
+          _isWriting = true;
+        } else {
+          _isWriting = false;
+        }
+      });
+    });
   }
 
-  void _onSearchSubmitted(String value) {
-    print("Submitted $value");
+  void _deleteAll() {
+    _textEditingController.clear();
   }
 
   @override
@@ -47,10 +61,72 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           elevation: 1,
-          title: CupertinoSearchTextField(
-            controller: _textEditingController,
-            onChanged: _onSearchChanged,
-            onSubmitted: _onSearchSubmitted,
+          title: Row(
+            children: [
+              const FaIcon(
+                FontAwesomeIcons.chevronLeft,
+                size: Sizes.size20,
+              ),
+              Gaps.h14,
+              Expanded(
+                child: SizedBox(
+                  height: Sizes.size36,
+                  child: TextField(
+                    controller: _textEditingController,
+                    cursorColor: Theme.of(context).primaryColor,
+                    decoration: InputDecoration(
+                      prefixIcon: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          FaIcon(
+                            FontAwesomeIcons.magnifyingGlass,
+                            color: Colors.black,
+                            size: Sizes.size16,
+                          ),
+                        ],
+                      ),
+                      hintText: "Search",
+                      hintStyle: const TextStyle(
+                        fontSize: Sizes.size14,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(Sizes.size6),
+                        borderSide: BorderSide.none,
+                      ),
+                      filled: true,
+                      fillColor: Colors.grey.shade100,
+                      suffixIcon: Padding(
+                        padding: const EdgeInsets.only(
+                          right: Sizes.size8,
+                        ),
+                        child: Opacity(
+                          opacity: _isWriting ? 1 : 0,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              GestureDetector(
+                                onTap: _deleteAll,
+                                child: const FaIcon(
+                                  FontAwesomeIcons.circleXmark,
+                                  size: Sizes.size16,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    textAlignVertical: TextAlignVertical.bottom,
+                  ),
+                ),
+              ),
+              Gaps.h14,
+              const FaIcon(
+                FontAwesomeIcons.sliders,
+                size: Sizes.size20,
+              ),
+            ],
           ),
           bottom: TabBar(
             splashFactory: NoSplash.splashFactory,
