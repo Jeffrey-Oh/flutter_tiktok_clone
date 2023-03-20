@@ -14,14 +14,22 @@ final tabs = [
 ];
 
 class DiscoverScreen extends StatefulWidget {
-  const DiscoverScreen({super.key});
+  const DiscoverScreen({
+    super.key,
+    required this.onTap,
+  });
+
+  final Function onTap;
 
   @override
   State<DiscoverScreen> createState() => _DiscoverScreenState();
 }
 
-class _DiscoverScreenState extends State<DiscoverScreen> {
+class _DiscoverScreenState extends State<DiscoverScreen>
+    with SingleTickerProviderStateMixin {
   final TextEditingController _textEditingController = TextEditingController();
+
+  late final TabController _tabController;
 
   String searchText = "";
 
@@ -41,6 +49,16 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
         }
       });
     });
+
+    _tabController = TabController(
+      length: tabs.length,
+      vsync: this,
+    );
+
+    // tab 이동 시에 키보드가 보이는 경우에 unfocus 처리
+    _tabController.addListener(() {
+      FocusScope.of(context).unfocus();
+    });
   }
 
   void _deleteAll() {
@@ -50,7 +68,13 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
   @override
   void dispose() {
     _textEditingController.dispose();
+    _tabController.dispose();
     super.dispose();
+  }
+
+  // 뒤로가기 누를 시 Home 으로 이동
+  void _onBackRoute() {
+    widget.onTap(0);
   }
 
   @override
@@ -63,9 +87,12 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
           elevation: 1,
           title: Row(
             children: [
-              const FaIcon(
-                FontAwesomeIcons.chevronLeft,
-                size: Sizes.size20,
+              GestureDetector(
+                onTap: _onBackRoute,
+                child: const FaIcon(
+                  FontAwesomeIcons.chevronLeft,
+                  size: Sizes.size20,
+                ),
               ),
               Gaps.h14,
               Expanded(
@@ -129,6 +156,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
             ],
           ),
           bottom: TabBar(
+            controller: _tabController,
             splashFactory: NoSplash.splashFactory,
             padding: const EdgeInsets.symmetric(
               horizontal: Sizes.size16,
@@ -150,6 +178,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
           ),
         ),
         body: TabBarView(
+          controller: _tabController,
           children: [
             GridView.builder(
               // keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag
