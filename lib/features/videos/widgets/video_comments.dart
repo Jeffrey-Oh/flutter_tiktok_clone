@@ -75,7 +75,7 @@ class _VideoCommentsState extends State<VideoComments> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const CircleAvatar(
-                        radius: Sizes.size16 + Sizes.size2,
+                        radius: Sizes.size18,
                         child: Text("오태"),
                       ),
                       Gaps.h10,
@@ -131,7 +131,7 @@ class _VideoCommentsState extends State<VideoComments> {
                     child: Row(
                       children: [
                         CircleAvatar(
-                          radius: Sizes.size16 + Sizes.size2,
+                          radius: Sizes.size18,
                           backgroundColor: Colors.grey.shade500,
                           foregroundColor: Colors.white,
                           child: const Text("오태"),

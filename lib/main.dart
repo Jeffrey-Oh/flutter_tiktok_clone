@@ -21,12 +21,13 @@ class TikTokApp extends StatelessWidget {
         ),
         appBarTheme: const AppBarTheme(
             // appBarTheme - 전역으로 appBar 스타일에 대해 지정할 수 있다.
+            centerTitle: true,
             foregroundColor: Colors.black,
             backgroundColor: Colors.white,
             elevation: 0,
             titleTextStyle: TextStyle(
               color: Colors.black,
-              fontSize: Sizes.size16 + Sizes.size2,
+              fontSize: Sizes.size18,
               fontWeight: FontWeight.w600,
             )),
       ),
