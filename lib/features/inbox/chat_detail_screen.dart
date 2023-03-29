@@ -11,10 +11,49 @@ class ChatDetailScreen extends StatefulWidget {
 }
 
 class _ChatDetailScreenState extends State<ChatDetailScreen> {
+  final TextEditingController _textEditingController = TextEditingController();
   final bool _isActive = true;
+  String searchText = "";
+  bool _isWriting = false;
+
+  void _stopWriting() {
+    FocusScope.of(context).unfocus(); // 키보드 영역 외에 focus 했을 때 키보드를 해제하기 위함
+    setState(() {
+      _isWriting = false;
+    });
+  }
+
+  void _onStartWrting() {
+    setState(() {
+      _isWriting = true;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _textEditingController.addListener(() {
+      setState(() {
+        searchText = _textEditingController.text;
+        if (searchText.isNotEmpty) {
+          _isWriting = true;
+        } else {
+          _isWriting = false;
+        }
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _textEditingController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: ListTile(
@@ -81,76 +120,177 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
           ),
         ),
       ),
-      body: Stack(
-        children: [
-          ListView.separated(
-            padding: const EdgeInsets.symmetric(
-              vertical: Sizes.size20,
-              horizontal: Sizes.size14,
-            ),
-            itemBuilder: (context, index) {
-              final isMine = index % 2 == 0;
-              return Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment:
-                    isMine ? MainAxisAlignment.end : MainAxisAlignment.start,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(
-                      Sizes.size14,
-                    ),
-                    decoration: BoxDecoration(
-                      color:
-                          isMine ? Colors.blue : Theme.of(context).primaryColor,
-                      borderRadius: BorderRadius.only(
-                        topLeft: const Radius.circular(
-                          Sizes.size20,
-                        ),
-                        topRight: const Radius.circular(
-                          Sizes.size20,
-                        ),
-                        bottomLeft: Radius.circular(
-                          isMine ? Sizes.size20 : Sizes.size5,
-                        ),
-                        bottomRight: Radius.circular(
-                          isMine ? Sizes.size5 : Sizes.size20,
-                        ),
-                      ),
-                    ),
-                    child: const Text(
-                      "this is a message!",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: Sizes.size16,
-                      ),
-                    ),
-                  ),
-                ],
-              );
-            },
-            separatorBuilder: (context, index) => Gaps.v10,
-            itemCount: 10,
-          ),
-          Positioned(
-            bottom: 0,
-            width: MediaQuery.of(context).size.width,
-            child: BottomAppBar(
-                color: Colors.grey.shade50,
-                child: Row(
+      body: GestureDetector(
+        onTap: _stopWriting,
+        child: Stack(
+          children: [
+            ListView.separated(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+              padding: const EdgeInsets.symmetric(
+                vertical: Sizes.size20,
+                horizontal: Sizes.size14,
+              ),
+              itemBuilder: (context, index) {
+                final isMine = index % 2 == 0;
+                return Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment:
+                      isMine ? MainAxisAlignment.end : MainAxisAlignment.start,
                   children: [
-                    const Expanded(
-                      child: TextField(),
-                    ),
-                    Gaps.h20,
                     Container(
-                      child: const FaIcon(
-                        FontAwesomeIcons.paperPlane,
+                      padding: const EdgeInsets.all(
+                        Sizes.size14,
                       ),
-                    )
+                      decoration: BoxDecoration(
+                        color: isMine
+                            ? Colors.blue
+                            : Theme.of(context).primaryColor,
+                        borderRadius: BorderRadius.only(
+                          topLeft: const Radius.circular(
+                            Sizes.size20,
+                          ),
+                          topRight: const Radius.circular(
+                            Sizes.size20,
+                          ),
+                          bottomLeft: Radius.circular(
+                            isMine ? Sizes.size20 : Sizes.size5,
+                          ),
+                          bottomRight: Radius.circular(
+                            isMine ? Sizes.size5 : Sizes.size20,
+                          ),
+                        ),
+                      ),
+                      child: const Text(
+                        "this is a message!",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: Sizes.size16,
+                        ),
+                      ),
+                    ),
                   ],
-                )),
-          ),
-        ],
+                );
+              },
+              separatorBuilder: (context, index) => Gaps.v10,
+              itemCount: 10,
+            ),
+            Positioned(
+              bottom: 0,
+              width: size.width,
+              child: BottomAppBar(
+                color: Colors.grey.shade200,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    top: Sizes.size10,
+                    bottom: Sizes.size10,
+                    left: Sizes.size10,
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: SizedBox(
+                          height: Sizes.size44,
+                          child: Stack(
+                            clipBehavior: Clip.none,
+                            children: [
+                              TextField(
+                                onTap: _onStartWrting,
+                                expands: true, // TextInputAction.newline 쓰기위함
+                                minLines: null, // expands 를 쓰려면 null
+                                maxLines: null, // expands 를 쓰려면 null
+                                textInputAction: TextInputAction.newline,
+                                cursorColor: Theme.of(context).primaryColor,
+                                decoration: InputDecoration(
+                                  hintText: "Send a message ...",
+                                  border: const OutlineInputBorder(
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(Sizes.size18),
+                                      topRight: Radius.circular(Sizes.size18),
+                                      bottomLeft: Radius.circular(Sizes.size18),
+                                    ),
+                                    borderSide: BorderSide
+                                        .none, // focus border 없어짐 (파란색)
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: Sizes.size12,
+                                  ),
+                                  suffixIcon: Padding(
+                                    padding: EdgeInsets.only(
+                                      right: _isWriting ? Sizes.size14 : 0,
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        FaIcon(
+                                          FontAwesomeIcons.faceLaugh,
+                                          color: Colors.grey.shade900,
+                                        ),
+                                        if (_isWriting) Gaps.h14,
+                                        if (_isWriting)
+                                          GestureDetector(
+                                            onTap: _stopWriting,
+                                            child: FaIcon(
+                                              FontAwesomeIcons.circleArrowUp,
+                                              color: Theme.of(context)
+                                                  .primaryColor,
+                                            ),
+                                          ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                bottom: 0,
+                                right: -2,
+                                child: Container(
+                                  width: Sizes.size3,
+                                  height: Sizes.size8,
+                                  decoration: const BoxDecoration(
+                                    borderRadius: BorderRadius.only(
+                                      topRight: Radius.circular(Sizes.size4),
+                                    ),
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                bottom: 0,
+                                right: -5,
+                                child: Container(
+                                  width: Sizes.size5,
+                                  height: Sizes.size5,
+                                  decoration: const BoxDecoration(
+                                    borderRadius: BorderRadius.only(
+                                      topRight: Radius.circular(Sizes.size3),
+                                    ),
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: Sizes.size14,
+                        ),
+                        child: FaIcon(
+                          FontAwesomeIcons.telegram,
+                          size: Sizes.size40,
+                          color: Colors.grey.shade500,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
