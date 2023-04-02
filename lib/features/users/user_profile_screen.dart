@@ -13,7 +13,9 @@ class UserProfileScreen extends StatefulWidget {
 }
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
-  final bool isOfficialUser = false;
+  final bool isOfficialUser = true;
+  final bool isHasYoutubeLink = true;
+  final bool isPinned = true;
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +55,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           "@jeffrey",
                           style: TextStyle(
                             fontWeight: FontWeight.w600,
-                            fontSize: Sizes.size14,
+                            fontSize: Sizes.size18,
                           ),
                         ),
                         if (isOfficialUser) Gaps.h5,
@@ -61,7 +63,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           FaIcon(
                             FontAwesomeIcons.solidCircleCheck,
                             size: Sizes.size16,
-                            color: Colors.blue.shade300,
+                            color: Colors.blue.shade500,
                           ),
                       ],
                     ),
@@ -92,30 +94,88 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       ),
                     ),
                     Gaps.v14,
-                    // FractionallySizedBox - 항상 부모의 width, height 를 기준으로 한다
-                    FractionallySizedBox(
-                      widthFactor: 0.33,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: Sizes.size12,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColor,
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(
-                              Sizes.size4,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Flexible(
+                          child: FractionallySizedBox(
+                            widthFactor: 1,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: Sizes.size12 + Sizes.size1,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).primaryColor,
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(
+                                    Sizes.size4,
+                                  ),
+                                ),
+                              ),
+                              child: const Text(
+                                'Follow',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
                             ),
                           ),
                         ),
-                        child: const Text(
-                          'Follow',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
+                        if (isHasYoutubeLink) Gaps.h5,
+                        if (isHasYoutubeLink)
+                          Flexible(
+                            child: FractionallySizedBox(
+                              widthFactor: 0.33,
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: Sizes.size8,
+                                ),
+                                decoration: BoxDecoration(
+                                  borderRadius: const BorderRadius.all(
+                                    Radius.circular(
+                                      Sizes.size4,
+                                    ),
+                                  ),
+                                  border: Border.all(
+                                    color: Colors.grey.shade300,
+                                  ),
+                                ),
+                                alignment: Alignment.center,
+                                child: const FaIcon(
+                                  FontAwesomeIcons.youtube,
+                                ),
+                              ),
+                            ),
                           ),
-                          textAlign: TextAlign.center,
+                        Gaps.h5,
+                        Flexible(
+                          child: FractionallySizedBox(
+                            widthFactor: 0.33,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: Sizes.size14,
+                              ),
+                              decoration: BoxDecoration(
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(
+                                    Sizes.size4,
+                                  ),
+                                ),
+                                border: Border.all(
+                                  color: Colors.grey.shade300,
+                                ),
+                              ),
+                              alignment: Alignment.center,
+                              child: const FaIcon(
+                                FontAwesomeIcons.chevronDown,
+                                size: Sizes.size12,
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
+                      ],
                     ),
                     Gaps.v14,
                     const Padding(
@@ -169,13 +229,36 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 ),
                 itemBuilder: (context, index) => Column(
                   children: [
-                    AspectRatio(
-                      aspectRatio: 9 / 14,
-                      child: FadeInImage.assetNetwork(
-                          fit: BoxFit.cover,
-                          placeholder: "assets/images/placeholder.jpg",
-                          image:
-                              "https://images.unsplash.com/photo-1598373182133-52452f7691ef?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80"),
+                    Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        AspectRatio(
+                          aspectRatio: 9 / 14,
+                          child: FadeInImage.assetNetwork(
+                              fit: BoxFit.cover,
+                              placeholder: "assets/images/placeholder.jpg",
+                              image:
+                                  "https://images.unsplash.com/photo-1598373182133-52452f7691ef?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80"),
+                        ),
+                        Positioned(
+                          bottom: 0,
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.play_arrow_rounded,
+                                size: Sizes.size24,
+                                color: Colors.white,
+                              ),
+                              Text(
+                                '$index M',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),

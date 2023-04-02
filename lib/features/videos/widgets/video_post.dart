@@ -85,6 +85,7 @@ class _VideoPostState extends State<VideoPost>
   }
 
   void _onVisibilityChanged(VisibilityInfo info) {
+    if (!mounted) return;
     // visibleFraction 값이 1 이면 화면 100% 가 보인다는 뜻
     if (info.visibleFraction == 1 &&
         !_isPaused &&
