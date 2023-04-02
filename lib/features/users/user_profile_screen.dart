@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/settings/settings_screen.dart';
 import 'package:tiktok_clone/features/users/widgets/persistent_tabbar.dart';
 import 'package:tiktok_clone/features/users/widgets/user_info.dart';
 
@@ -17,6 +18,14 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   final bool isHasYoutubeLink = true;
   final bool isPinned = true;
 
+  void _onGearPressed() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const SettingsScreen(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -29,7 +38,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 title: const Text('제프리'),
                 actions: [
                   IconButton(
-                    onPressed: () {},
+                    onPressed: _onGearPressed,
                     icon: const FaIcon(
                       FontAwesomeIcons.gear,
                       size: Sizes.size20,
