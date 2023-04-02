@@ -64,7 +64,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             title: const Text("Log out (iOS)"),
             textColor: Colors.red,
             onTap: () {
-              showCupertinoDialog(
+              showCupertinoModalPopup(
                 context: context,
                 builder: (context) => CupertinoAlertDialog(
                   title: const Text("Are you sure?"),
@@ -102,6 +102,52 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       onPressed: () => Navigator.of(context).pop(),
                       child: const Text("Yes"),
                     ),
+                  ],
+                ),
+              );
+            },
+          ),
+          ListTile(
+            title: const Text("Log out (iOS / Bottom)"),
+            textColor: Colors.red,
+            onTap: () {
+              showCupertinoModalPopup(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const Text("Are you sure?"),
+                  content: const Text("Please don't go"),
+                  actions: [
+                    IconButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      icon: const FaIcon(FontAwesomeIcons.car),
+                    ),
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const Text("Yes"),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+          ListTile(
+            title: const Text("Log out (iOS / Bottom)"),
+            textColor: Colors.red,
+            onTap: () {
+              showCupertinoModalPopup(
+                context: context,
+                builder: (context) => CupertinoActionSheet(
+                  title: const Text("Are you sure?"),
+                  message: const Text("Please doooooont goooooo"),
+                  actions: [
+                    CupertinoActionSheetAction(
+                        isDefaultAction: true, // 좀 더 굵게 처리하여 기본 값으로 중요한게 뭔지 알림
+                        onPressed: () {},
+                        child: const Text("Not log out")),
+                    CupertinoActionSheetAction(
+                        isDestructiveAction: true,
+                        onPressed: () {},
+                        child: const Text("Yes plz.")),
                   ],
                 ),
               );
