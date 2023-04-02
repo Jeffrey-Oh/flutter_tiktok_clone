@@ -1,7 +1,22 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
+
+  @override
+  State<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
+  bool _notification = false;
+
+  void _onNotificationsChanged(bool? newValue) {
+    if (newValue == null) return;
+    setState(() {
+      _notification = newValue;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,6 +28,38 @@ class SettingsScreen extends StatelessWidget {
       ),
       body: ListView(
         children: [
+          Switch.adaptive(
+            value: _notification,
+            onChanged: _onNotificationsChanged,
+          ),
+          CupertinoSwitch(
+            value: _notification,
+            onChanged: _onNotificationsChanged,
+          ),
+          Switch(
+            value: _notification,
+            onChanged: _onNotificationsChanged,
+          ),
+          SwitchListTile(
+            value: _notification,
+            onChanged: _onNotificationsChanged,
+            title: const Text("SwitchListTile"),
+          ),
+          SwitchListTile.adaptive(
+            value: _notification,
+            onChanged: _onNotificationsChanged,
+            title: const Text("SwitchListTile.adaptive"),
+          ),
+          Checkbox(
+            value: _notification,
+            onChanged: _onNotificationsChanged,
+          ),
+          CheckboxListTile(
+            activeColor: Colors.black,
+            value: _notification,
+            onChanged: _onNotificationsChanged,
+            title: const Text("CheckboxListTile"),
+          ),
           ListTile(
             onTap: () async {
               final date = await showDatePicker(
